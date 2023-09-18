@@ -89,16 +89,16 @@ export function parseApiProperty(
     type?: boolean;
   } = {},
 ): IApiProperty[] {
-  const incl = {
-    default: true,
-    doc: true,
-    enum: true,
-    type: true,
-    ...include,
-  };
+  const {
+    default: includeDefault = true,
+    doc = true,
+    enum: includeEnum = true,
+    type = true,
+  } = include;
+
   const properties: IApiProperty[] = [];
 
-  if (incl.doc && field.documentation) {
+  if (doc && field.documentation) {
     for (const prop of ApiProps) {
       const property = extractAnnotation(field, prop);
       if (property) {
@@ -107,7 +107,7 @@ export function parseApiProperty(
     }
   }
 
-  if (incl.type) {
+  if (type) {
     const scalarFormat = PrismaScalarToFormat[field.type];
     if (field.isList) {
       if (scalarFormat) {
@@ -134,27 +134,22 @@ export function parseApiProperty(
     }
   }
 
-  if (incl.enum && field.kind === 'enum') {
+  if (includeEnum && field.kind === 'enum') {
     properties.push({ name: 'enum', value: field.type });
   }
 
   const defaultValue = getDefaultValue(field);
-  if (incl.default && defaultValue !== undefined) {
+  if (includeDefault && defaultValue !== undefined) {
     properties.push({ name: 'default', value: `${defaultValue}` });
   }
 
   if (!field.isRequired) {
     properties.push({ name: 'required', value: 'false' });
   }
-  if (
-    typeof field.isNullable === 'boolean' ? field.isNullable : !field.isRequired
-  ) {
-    properties.push({ name: 'nullable', value: 'true' });
-  }
 
-  // set dummy property to force `@ApiProperty` decorator
-  if (properties.length === 0) {
-    properties.push({ name: 'dummy', value: '' });
+  if (field.isNullable || !field.isRequired) {
+    properties.push({ name: 'nullable', value: 'true' });
+    properties.push({ name: 'required', value: 'false' });
   }
 
   return properties;
