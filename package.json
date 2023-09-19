@@ -1,7 +1,7 @@
 {
-  "name": "@brakebein/prisma-generator-nestjs-dto",
-  "description": "Generates DTO and Entity classes from Prisma Schema for NestJS",
-  "version": "1.18.3",
+  "name": "generator-prisma-nest-swagger-gen",
+  "description": "Generates DTO and Entity classes from Prisma Schema for NestJS oriented to SwaggerGen.",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "author": {
     "name": "Benjamin Kroeger",
@@ -10,8 +10,8 @@
   },
   "contributors": [
     {
-      "name": "Brakebein",
-      "url": "https://github.com/Brakebein"
+      "name": "RobotSolar",
+      "url": "https://github.com/robotsolar"
     }
   ],
   "main": "dist/index.js",
