@@ -143,10 +143,10 @@ export function parseApiProperty(
     properties.push({ name: 'default', value: `${defaultValue}` });
   }
 
-  const required = !field.isNullable || field.isRequired;
+  const optional = Boolean(field.isNullable || !field.isRequired);
 
-  properties.push({ name: 'nullable', value: required ? 'false' : 'true' });
-  properties.push({ name: 'required', value: required ? 'true' : 'false' });
+  properties.push({ name: 'nullable', value: optional ? 'true' : 'false' });
+  properties.push({ name: 'required', value: optional ? 'false' : 'true' });
 
   return properties;
 }
